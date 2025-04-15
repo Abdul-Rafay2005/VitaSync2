@@ -1,1 +1,1 @@
-# VivaSync
+# VitaSync
