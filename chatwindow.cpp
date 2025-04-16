@@ -101,7 +101,7 @@ void ChatWindow::sendMessage()
 
     QNetworkRequest request(QUrl("https://api.openai.com/v1/chat/completions"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization", "Bearer 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");
+    request.setRawHeader("Authorization", "Bearer sk-"my open api key ");
 
     QNetworkReply *reply = networkManager->post(request, QJsonDocument(requestBody).toJson());
 
