@@ -40,7 +40,7 @@ LoginWindow::LoginWindow(QWidget *parent) : QWidget(parent) {
     descText->setWordWrap(true);
 
     QLabel *creditsLabel = new QLabel("Developed by:\nAbdul Rafay, Syed Nabeel, Sadia, Bisma");
-    creditsLabel->setStyleSheet("color: #e0f7ff; font-size: 19px; font-weight: 500;");
+    creditsLabel->setStyleSheet("color: #e0f7ff; font-size: 16px; font-weight: 500;");
     creditsLabel->setAlignment(Qt::AlignCenter);
 
     QVBoxLayout *welcomeLayout = new QVBoxLayout(welcomeWidget);
