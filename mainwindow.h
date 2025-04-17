@@ -5,12 +5,10 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QSpacerItem>
-#include <QFrame>
-#include <QPalette>
 #include <QGraphicsDropShadowEffect>
-#include <QFont>
-#include "chatwindow.h"  // Assuming you have a ChatWindow class
+#include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include "chatwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,15 +22,11 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
-
     QWidget *centralWidget;
     QVBoxLayout *layout;
     QPushButton *generalDoctorBtn;
     QPushButton *psychiatricDoctorBtn;
-    QLabel *titleLabel;  // Add this line
-    QFrame *separator;
-    QPalette palette;
+    QLabel *titleLabel;
     QGraphicsDropShadowEffect *shadowEffect;
 
     void setupUI();
