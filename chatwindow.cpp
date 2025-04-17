@@ -101,7 +101,7 @@ void ChatWindow::sendMessage()
 
     QNetworkRequest request(QUrl("https://openrouter.ai/api/v1/chat/completions"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization", "Bearer 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");
+    request.setRawHeader("Authorization", "Bearer our api key");
     // request.setRawHeader("HTTP-Referer", "<YOUR_SITE_URL>");
     // request.setRawHeader("X-Title", "<YOUR_SITE_NAME>");
 
