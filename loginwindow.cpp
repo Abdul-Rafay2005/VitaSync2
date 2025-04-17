@@ -40,7 +40,7 @@ LoginWindow::LoginWindow(QWidget *parent) : QWidget(parent) {
     descText->setWordWrap(true);
 
     QLabel *creditsLabel = new QLabel("Developed by:\nAbdul Rafay, Syed Nabeel, Sadia, Bisma");
-    creditsLabel->setStyleSheet("color: #e0f7ff; font-size: 19px; font-weight: 500;");
+    creditsLabel->setStyleSheet("color: #e0f7ff; font-size: 12px; font-weight: 500;");
     creditsLabel->setAlignment(Qt::AlignCenter);
 
     QVBoxLayout *welcomeLayout = new QVBoxLayout(welcomeWidget);
@@ -72,7 +72,7 @@ LoginWindow::LoginWindow(QWidget *parent) : QWidget(parent) {
     passInput = new QLineEdit();
     passInput->setMinimumHeight(40);
     passInput->setEchoMode(QLineEdit::Password);
-    passInput->setStyleSheet("color: black; border-radius: 10px 0 0 10px; padding-left: 8px; font-size: 14px; background-color: #ffffff; border: 1px solid #ccc;");
+    passInput->setStyleSheet("color: black; border-radius: 10px ; padding-left: 9px; font-size: 14px; background-color: #ffffff; border: 1px solid #ccc;");
     passInput->installEventFilter(this);
 
     QPushButton *toggleButton = new QPushButton("🙈");  // Default: password hidden
@@ -82,9 +82,9 @@ LoginWindow::LoginWindow(QWidget *parent) : QWidget(parent) {
     toggleButton->setFixedWidth(50);
     toggleButton->setStyleSheet(
         "QPushButton {"
-        "   border-radius: 0 10px 10px 0;"
+        "   border-radius: 10px 10px 10px 10px;"
         "   background-color: #f0f0f0;"
-        "   border: 1px solid #ccc;"
+        "   border: 1 px solid #ccc;"
         "   border-left: none;"
         "   font-size: 18px;"
         "   padding-bottom: 3px;"
@@ -124,7 +124,7 @@ LoginWindow::LoginWindow(QWidget *parent) : QWidget(parent) {
     agreeCheckBox = new QCheckBox("I agree to the ");
     agreeCheckBox->setStyleSheet(
         "QCheckBox { font-size: 13px; color: black; spacing: 5px; }"
-        "QCheckBox::indicator { width: 18px; height: 18px; }"
+        "QCheckBox::indicator { width: 16px; height: 18px; }"
         );
 
     QLabel *termsLink = new QLabel("<a href='#'>Terms & Conditions</a>");
