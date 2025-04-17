@@ -10,12 +10,21 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
-ChatWindow::ChatWindow(const QString &doctorType, QWidget *parent)
-    : QWidget(parent), doctorType(doctorType)
+ChatWindow::ChatWindow(const QString &doctorType, const QString &doctorName, QWidget *parent)
+    : QWidget(parent), doctorType(doctorType), doctorName(doctorName)
 {
-    setWindowTitle("Chat with " + doctorType);
+    setWindowTitle("Chat with " + doctorName);
     showMaximized();
 
+    setupUI();
+    applyStyle();
+    sendInitialGreeting();
+}
+
+ChatWindow::~ChatWindow() {}
+
+void ChatWindow::setupUI()
+{
     chatBox = new QTextEdit();
     chatBox->setReadOnly(true);
     chatBox->setStyleSheet(R"(
@@ -74,6 +83,43 @@ ChatWindow::ChatWindow(const QString &doctorType, QWidget *parent)
     networkManager = new QNetworkAccessManager(this);
 }
 
+void ChatWindow::applyStyle()
+{
+    // Different styling based on doctor type
+    if (doctorType == "General") {
+        this->setStyleSheet(R"(
+            QWidget {
+                background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
+                    stop:0 #1e3c72, stop:1 #2a5298);
+            }
+        )");
+    } else { // Psychiatric
+        this->setStyleSheet(R"(
+            QWidget {
+                background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
+                    stop:0 #614385, stop:1 #516395);
+            }
+        )");
+    }
+}
+
+void ChatWindow::sendInitialGreeting()
+{
+    QString greeting;
+    if (doctorType == "General") {
+        greeting = QString("Hello! I'm %1, your general health assistant. "
+                           "I can help with medical questions, symptoms analysis, "
+                           "and general health advice. How can I help you today?").arg(doctorName);
+    } else { // Psychiatric
+        greeting = QString("Hi there, I'm %1, your mental wellness guide. "
+                           "I'm here to listen and help with any emotional or psychological concerns "
+                           "you might have. What's on your mind?").arg(doctorName);
+    }
+
+    QString time = QDateTime::currentDateTime().toString("hh:mm:ss");
+    chatBox->append("<b>" + doctorName + " [" + time + "]:</b> " + greeting);
+}
+
 void ChatWindow::sendMessage()
 {
     QString message = inputField->text().trimmed();
@@ -83,11 +129,25 @@ void ChatWindow::sendMessage()
     chatBox->append("<b>You [" + time + "]:</b> " + message);
     inputField->clear();
 
+    // Prepare system prompt based on doctor type
+    QString systemPrompt;
+    if (doctorType == "General") {
+        systemPrompt = QString("You are %1, a professional and kind general practitioner. "
+                               "Provide accurate medical information in simple terms. "
+                               "For serious symptoms, recommend seeing a doctor in person. "
+                               "Be concise but thorough in your explanations.").arg(doctorName);
+    } else { // Psychiatric
+        systemPrompt = QString("You are %1, a compassionate mental health counselor. "
+                               "Provide supportive, non-judgmental advice. "
+                               "For serious mental health concerns, recommend professional help. "
+                               "Use active listening techniques and ask thoughtful questions.").arg(doctorName);
+    }
+
     // Prepare JSON payload
     QJsonArray messagesArray = {
         QJsonObject{
             {"role", "system"},
-            {"content", "You are a helpful, kind and professional AI medical assistant. Only respond to health and therapy-related questions. Politely decline anything unrelated."}
+            {"content", systemPrompt}
         },
         QJsonObject{
             {"role", "user"},
@@ -101,9 +161,7 @@ void ChatWindow::sendMessage()
 
     QNetworkRequest request(QUrl("https://openrouter.ai/api/v1/chat/completions"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization", "Bearer our api key");
-    // request.setRawHeader("HTTP-Referer", "<YOUR_SITE_URL>");
-    // request.setRawHeader("X-Title", "<YOUR_SITE_NAME>");
+    request.setRawHeader("Authorization", "Bearer ");
 
     QNetworkReply *reply = networkManager->post(request, QJsonDocument(requestBody).toJson());
 
@@ -113,7 +171,7 @@ void ChatWindow::sendMessage()
             QString responseText = jsonDoc["choices"].toArray()[0].toObject()["message"].toObject()["content"].toString();
 
             QString time = QDateTime::currentDateTime().toString("hh:mm:ss");
-            chatBox->append("<b>VitaSync [" + time + "]:</b> " + responseText);
+            chatBox->append("<b>" + doctorName + " [" + time + "]:</b> " + responseText);
         } else {
             chatBox->append("<b>Error:</b> " + reply->errorString());
         }
